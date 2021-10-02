@@ -6,14 +6,14 @@
 
 Big_Number::Big_Number() {
 	a = new(std::nothrow) DATA_TYPE[capacity = PAS];
-	std::memset(a, 0, PAS * sizeof(DATA_TYPE));
+	std::memset(a, 0, PAS);
 
 	len = 1;
 }
 
 Big_Number::Big_Number(int x) {
 	a = new(std::nothrow) DATA_TYPE[capacity = PAS];
-	std::memset(a, 0, PAS * sizeof(DATA_TYPE));
+	std::memset(a, 0, PAS);
 
 	len = 0;
 	do {
@@ -42,15 +42,17 @@ inline void Big_Number::operator += (const Big_Number &other) {
 }
 
 inline void Big_Number::operator = (const Big_Number &other) {
-	if (other.capacity != capacity)
-		a = (DATA_TYPE *) calloc(capacity = other.capacity, sizeof(DATA_TYPE));
+	if (other.capacity != capacity) {
+		free(a);
+		a = (DATA_TYPE *) calloc(capacity = other.capacity, 1);
+	}
 
-	std::memcpy(a, other.a, (len = other.len) * sizeof(DATA_TYPE));
+	std::memcpy(a, other.a, (len = other.len));
 }
 
 inline void Big_Number::increase_capacity() {
-	a = (DATA_TYPE *) realloc(a, (capacity + PAS) * sizeof(DATA_TYPE));
-	memset(a + capacity, 0, PAS * sizeof(DATA_TYPE));
+	a = (DATA_TYPE *) realloc(a, (capacity + PAS));
+	memset(a + capacity, 0, PAS);
 	capacity += PAS;
 }
 

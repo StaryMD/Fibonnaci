@@ -3,7 +3,7 @@
 #include "Big_Number.hpp"
 
 #define PRINT_LAST_NUMBER false
-#define PRINT_ALL_NUMBERS true
+#define PRINT_ALL_NUMBERS false
 
 #if PRINT_ALL_NUMBERS
 	#include <fstream>
