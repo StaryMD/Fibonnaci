@@ -1,0 +1,15 @@
+#include <chrono>
+
+struct My_time {
+	std::chrono::system_clock::time_point start;
+
+	My_time() {
+		start = std::chrono::system_clock::now();
+	}
+
+	double elapsed_time() {
+		std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+		std::chrono::duration<double> interval = now - start;
+		return interval.count();
+	}
+};
