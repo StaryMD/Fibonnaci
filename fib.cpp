@@ -21,17 +21,17 @@ int main(int cargs, char *vargs[]) {
 	#endif
 
 	int count = atoi(vargs[1]);
-	Big_Number a(1), b(0), tmp(0);
+	Big_Number vec[2] = { Big_Number(0), Big_Number(1) };
 
 	if (count) { // Calculate 'count' fibonnaci numbers
 		My_time my_time;
-		for (int i = 1; i < count; i++) {
-			tmp = a;
-			a += b;
-			b = tmp;
+		int i;
+		bool e = 0;
+		for (i = 0; i != count; i++, e = !e) {
+			vec[e] += vec[!e];
 
 			#if PRINT_ALL_NUMBERS
-				fout << a.to_string() << '\n';
+				fout << vec[e].to_string() << '\n';
 			#endif
 		}
 
@@ -39,7 +39,7 @@ int main(int cargs, char *vargs[]) {
 			std::cout << "\n\n";
 		#endif
 		std::cout << "Elapsed time: " << my_time.elapsed_time() << '\n';
-		std::cout << "Last digit count: " << a.len << '\n';
+		std::cout << "Last digit count: " << vec[!e].len << '\n';
 
 		#if PRINT_LAST_NUMBER
 			std::cout << count << "th fibonacci number:\n";
@@ -57,19 +57,18 @@ int main(int cargs, char *vargs[]) {
 		}
 
 		My_time my_time;
-		for (count = 1; my_time.elapsed_time() < wanted_time; count++) {
-			tmp = a;
-			a += b;
-			b = tmp;
-
+		bool e = 0;
+		for (count = 0; my_time.elapsed_time() < wanted_time; count++, e = !e) {
+			vec[e] += vec[!e];
+			
 			#if PRINT_ALL_NUMBERS
-				fout << a.to_string() << '\n';
+				fout << vec[e].to_string() << '\n';
 			#endif
 
 		}
 
 		std::cout << "Numbers calculated in " << wanted_time << (wanted_time == 1.0 ? " second: " : " seconds: ") << count << '\n';
-		std::cout << "Last digit count: " << a.len << '\n';
+		std::cout << "Last digit count: " << vec[!e].len << '\n';
 	}
 
 	return 0;

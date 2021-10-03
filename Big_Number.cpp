@@ -30,6 +30,7 @@ Big_Number::~Big_Number() {
 inline void Big_Number::operator += (const Big_Number &other) {
 	DATA_TYPE carry = 0;
 
+	len = std::max(len, other.len);
 	for (int i = 0; i != len; i++) {
 		a[i] += other.a[i] + carry;
 		a[i] -= (carry = a[i] > (DATA_TYPE)9) * (DATA_TYPE)10;
@@ -39,15 +40,6 @@ inline void Big_Number::operator += (const Big_Number &other) {
 		increase_capacity();
 	a[len] = carry;
 	len += carry;
-}
-
-inline void Big_Number::operator = (const Big_Number &other) {
-	if (other.capacity != capacity) {
-		free(a);
-		a = (DATA_TYPE *) calloc(capacity = other.capacity, 1);
-	}
-
-	std::memcpy(a, other.a, (len = other.len));
 }
 
 inline void Big_Number::increase_capacity() {
