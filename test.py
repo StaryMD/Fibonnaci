@@ -8,7 +8,7 @@ with open("D:/Programs/C++/Fibonnaci/data/nums.out") as f:
 		try:
 			num = int(line)
 		except:
-			print('fuck', i)
+			print('fuck line', i)
 			break
 
 		c = a
@@ -17,4 +17,4 @@ with open("D:/Programs/C++/Fibonnaci/data/nums.out") as f:
 
 		if a != num:
 			print('fuck', i)
-			break
+			#break

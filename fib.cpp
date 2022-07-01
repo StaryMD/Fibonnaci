@@ -1,6 +1,6 @@
 #include <iostream>
 #include "my_time"
-#include "Big_Number.hpp"
+#include "Big_Integer.cpp"
 
 #define PRINT_LAST_NUMBER false
 #define PRINT_ALL_NUMBERS false
@@ -21,30 +21,42 @@ int main(int cargs, char *vargs[]) {
 	#endif
 
 	int count = atoi(vargs[1]);
-	Big_Number vec[2] = { Big_Number(0), Big_Number(1) };
 
-	if (count) { // Calculate 'count' fibonnaci numbers
-		My_time my_time;
-		int i;
-		bool e = 0;
-		for (i = 0; i != count; i++, e = !e) {
-			vec[e] += vec[!e];
+	if (count != 0) { // Calculate 'count' fibonnaci numbers
+		if (cargs >= 2 && vargs[2] == "fast") { // Use matrix multiplication for calculating nth fib
+			/*Matrix a(1, 0, 0, 0), b(1, 1, 1, 0);
+
+			while (count) {
+				if (count & 1)
+					a *= b;
+				b *= b;
+			}*/
+		}
+		else { // Do it like a casual
+			My_time my_time;
+			Big_Integer a(1), b(0), c;
+
+			for (int i = 0; i != count; i++) {
+				c = a;
+				a += b;
+				b = c;
+
+				#if PRINT_ALL_NUMBERS
+					fout << a << '\n';
+				#endif
+			}
 
 			#if PRINT_ALL_NUMBERS
-				fout << vec[e].to_string() << '\n';
+				//std::cout << "\n\n";
+			#endif
+			std::cout << "Elapsed time: " << my_time.elapsed_time() << '\n';
+			std::cout << "Last digit count: " << a.size() << '\n';
+
+			#if PRINT_LAST_NUMBER
+				std::cout << count << "th fibonacci number:\n";
+				std::cout << a << '\n';
 			#endif
 		}
-
-		#if PRINT_ALL_NUMBERS
-			std::cout << "\n\n";
-		#endif
-		std::cout << "Elapsed time: " << my_time.elapsed_time() << '\n';
-		std::cout << "Last digit count: " << vec[!e].len << '\n';
-
-		#if PRINT_LAST_NUMBER
-			std::cout << count << "th fibonacci number:\n";
-			a.print();
-		#endif
 	}
 	else { // Calculate fibonnaci numbers for a number of seconds
 		double wanted_time = 1.0;
@@ -56,20 +68,22 @@ int main(int cargs, char *vargs[]) {
 				wanted_time = 1.0;
 		}
 
-		My_time my_time;
-		bool e = 0;
-		for (count = 0; my_time.elapsed_time() < wanted_time; count++, e = !e) {
-			vec[e] += vec[!e];
-			
+		My_time timer;
+		Big_Integer a(1), b(0), c;
+
+		for (count = 0; timer.elapsed_time() < wanted_time; count++) {
+			c = a;
+			a += b;
+			b = c;
+
 			#if PRINT_ALL_NUMBERS
-				fout << vec[e].to_string() << '\n';
+				fout << a << '\n';
 			#endif
 
 		}
 
 		std::cout << "Numbers calculated in " << wanted_time << (wanted_time == 1.0 ? " second: " : " seconds: ") << count << '\n';
-		std::cout << "Last digit count: " << vec[!e].len << '\n';
+		std::cout << "Last digit count: " << a.size() << '\n';
 	}
-
 	return 0;
 }
