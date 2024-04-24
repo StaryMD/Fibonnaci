@@ -1,8 +1,8 @@
 #pragma once
 
-#include <fstream>
 #include <cstdlib>
 #include <cmath>
+#include <ostream>
 
 class Big_Integer {
 public:
